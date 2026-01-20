@@ -1,6 +1,8 @@
 /**
- * Cucumber configuration
+ * Cucumber configuration - compatible with CI/CD environments
  */
+const isCI = !!process.env.CI;
+
 module.exports = {
   default: {
     require: ['stepDefs/**/*.js'],
@@ -13,6 +15,10 @@ module.exports = {
     ],
     formatOptions: {
       snippetInterface: 'async-await'
-    }
+    },
+    strict: isCI,
+    failFast: false,
+    timeout: 60000,
+    parallel: isCI ? 2 : 1
   }
 };

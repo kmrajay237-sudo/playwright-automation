@@ -3,18 +3,22 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
+    "test": "playwright test --workers=1",
+    "test:headed": "playwright test --headed --workers=1",
     "bdd": "cucumber-js",
-    "bdd:report": "cucumber-js --publish-quiet --format @cucumber/pretty"
+    "bdd:report": "cucumber-js --publish-quiet --format @cucumber/pretty",
+    "bdd:ci": "cucumber-js --format json:cucumber-report.json --format html:cucumber-report.html",
+    "test:ci": "playwright test --workers=1 --reporter=html"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Playwright automation with BDD Cucumber",
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.9",
-    "@cucumber/cucumber": "^9.5.1",
-    "cucumber": "^9.5.1"
+    "@playwright/test": "^1.45.0",
+    "@types/node": "^20.10.0",
+    "@cucumber/cucumber": "^10.0.0",
+    "@cucumber/pretty": "^1.0.0"
   }
 }
+
