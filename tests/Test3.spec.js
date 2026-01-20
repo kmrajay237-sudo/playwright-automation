@@ -18,7 +18,7 @@ test('Verify that user is able to add product in the cart and place order in dem
         await dialog.accept();
     });
     await page.click('#cartur');
-    // await expect(page.locator('td:has-text("Apple monitor 24")')).toBeVisible();
+    await expect(page.locator('td:has-text("Apple monitor 24")')).toBeVisible();
     await page.click("button:has-text('Place Order')");
     await page.fill('#name','Pavan Ol');
     await page.fill('#country','India');
