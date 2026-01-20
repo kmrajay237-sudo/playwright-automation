@@ -5,7 +5,7 @@ const isCI = !!process.env.CI;
 export default defineConfig({
   testDir: './tests',
 
-  workers: isCI ? 2 : 1,
+  workers: isCI ? 1 : 1,
   fullyParallel: isCI,
 
   reporter: [['html', { open: 'never' }]],

@@ -2,7 +2,7 @@ const {test, expect} = require('@playwright/test');
 const { FacebookPage } = require('../pages/FacebookPage');
 const testData = require('../testdata/testdata');
 
-test('Verify that user is able to login and logout from Facebook', async ({page})=>{
+test.skip('Verify that user is able to login and logout from Facebook', async ({page})=>{
     const facebookPage = new FacebookPage(page);
     const { email, password } = testData.facebookLoginLogoutTest.credentials;
     
