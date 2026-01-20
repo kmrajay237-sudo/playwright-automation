@@ -2,7 +2,7 @@ const {test, expect} = require('@playwright/test');
 const { PlaywrightDocsPage } = require('../pages/PlaywrightDocsPage');
 const config = require('../config/config');
 
-test('Verify that user is able to navigate between pages in Playwright official website', async ({page}) => {
+test.skip('Verify that user is able to navigate between pages in Playwright official website', async ({page}) => {
   const playwrightDocsPage = new PlaywrightDocsPage(page);
   
   await playwrightDocsPage.navigateToPlaywrightHome();

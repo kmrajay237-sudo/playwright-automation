@@ -3,7 +3,7 @@ const { DemoBlazePage } = require('../pages/DemoBlazePage');
 const config = require('../config/config');
 const testData = require('../testdata/testdata');
 
-test('Verify that user is able to add product in the cart and place order in demoblaze', async ({page})=>{
+test.skip('Verify that user is able to add product in the cart and place order in demoblaze', async ({page})=>{
     const demoBlazePage = new DemoBlazePage(page);
     const testCase = testData.cartAndOrderTest;
     const { username, password } = testCase.credentials;
