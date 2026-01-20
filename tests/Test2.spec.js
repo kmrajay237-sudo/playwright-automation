@@ -1,14 +1,22 @@
 const {test, expect} = require('@playwright/test');
+const { PlaywrightDocsPage } = require('../pages/PlaywrightDocsPage');
+const config = require('../config/config');
 
 test('Verify that user is able to navigate between pages in Playwright official website', async ({page}) => {
-  await page.goto('https://playwright.dev/');
-  await expect(page).toHaveTitle('Fast and reliable end-to-end testing for modern web apps | Playwright');
-  await page.goto('https://playwright.dev/docs/intro');
-  await expect(page).toHaveTitle('Installation | Playwright');
-  await page.goBack();
-  await expect(page).toHaveTitle('Fast and reliable end-to-end testing for modern web apps | Playwright');
-  await page.goForward();
-  await expect(page).toHaveTitle('Installation | Playwright');
-  await page.reload();
-  await expect(page).toHaveTitle('Installation | Playwright');
+  const playwrightDocsPage = new PlaywrightDocsPage(page);
+  
+  await playwrightDocsPage.navigateToPlaywrightHome();
+  await expect(page).toHaveTitle(config.titles.playwrightHome);
+  
+  await playwrightDocsPage.navigateToPlaywrightDocs();
+  await expect(page).toHaveTitle(config.titles.playwrightDocs);
+  
+  await playwrightDocsPage.goBack();
+  await expect(page).toHaveTitle(config.titles.playwrightHome);
+  
+  await playwrightDocsPage.goForward();
+  await expect(page).toHaveTitle(config.titles.playwrightDocs);
+  
+  await playwrightDocsPage.reloadPage();
+  await expect(page).toHaveTitle(config.titles.playwrightDocs);
 });

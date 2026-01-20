@@ -2,13 +2,19 @@
   "name": "play2",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "bdd": "cucumber-js",
+    "bdd:report": "cucumber-js --publish-quiet --format @cucumber/pretty"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.9"
+    "@types/node": "^25.0.9",
+    "@cucumber/cucumber": "^9.5.1",
+    "cucumber": "^9.5.1"
   }
 }

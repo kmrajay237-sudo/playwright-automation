@@ -1,33 +1,34 @@
-const {test, expect} = require('@playwright/test')
-test('Verify that user is able to add product in the cart and place order in demoblaze', async ({page})=>{
-    await page.goto('https://www.demoblaze.com/');
-    const title = await page.title();
-    console.log('Page title is : '+title);
-    await expect(page).toHaveTitle('STORE');
-    await page.click('#login2');
-    await page.fill('#loginusername','pavanol');
-    await page.fill('#loginpassword','test@123');
-    await page.click('button:has-text("Log in")');
-    await expect(page.locator('a:has-text("Welcome pavanol")')).toBeVisible();
+const {test, expect} = require('@playwright/test');
+const { DemoBlazePage } = require('../pages/DemoBlazePage');
+const config = require('../config/config');
+const testData = require('../testdata/testdata');
 
-    await page.click('a:has-text("Monitors")');
-    await page.click('a:has-text("Apple monitor 24")');
-    await page.click('a:has-text("Add to cart")');
-    await page.on('dialog', async dialog => {
-        console.log(dialog.message());
-        await dialog.accept();
-    });
-    await page.click('#cartur');
-    await expect(page.locator('td:has-text("Apple monitor 24")')).toBeVisible();
-    await page.click("button:has-text('Place Order')");
-    await page.fill('#name','Pavan Ol');
-    await page.fill('#country','India');
-    await page.fill('#city','Hyderabad');
-    await page.fill('#card','1234567890');
-    await page.fill('#month','June');
-    await page.fill('#year','2024');
-    await page.click("button:has-text('Purchase')");
-    const confirmation = await page.locator('.sweet-alert > h2').textContent();
+test('Verify that user is able to add product in the cart and place order in demoblaze', async ({page})=>{
+    const demoBlazePage = new DemoBlazePage(page);
+    const testCase = testData.cartAndOrderTest;
+    const { username, password } = testCase.credentials;
+    const { category, productName, order, expectedConfirmationMessage } = testCase;
+    
+    await demoBlazePage.navigateToDemoBlazeStore();
+    const title = await demoBlazePage.getTitle();
+    console.log('Page title is : '+title);
+    await expect(page).toHaveTitle(config.titles.demoBlaze);
+    
+    await demoBlazePage.login(username, password);
+    await expect(page.locator(`a:has-text("${testCase.expectedWelcomeMessage}")`)).toBeVisible();
+
+    await demoBlazePage.navigateToCategory(category);
+    await demoBlazePage.selectProduct(productName);
+    await demoBlazePage.addProductToCart();
+    
+    await demoBlazePage.goToCart();
+    await expect(page.locator(`td:has-text("${productName}")`)).toBeVisible();
+    
+    await demoBlazePage.clickPlaceOrder();
+    await demoBlazePage.fillOrderDetails(order.name, order.country, order.city, order.cardNumber, order.month, order.year);
+    await demoBlazePage.completePurchase();
+    
+    const confirmation = await demoBlazePage.getConfirmationMessage();
     console.log('Confirmation message: '+confirmation);
-    await expect(page.locator('.sweet-alert > h2')).toHaveText('Thank you for your purchase!');
+    await expect(page.locator('.sweet-alert > h2')).toHaveText(expectedConfirmationMessage);
 });
