@@ -1,26 +1,14 @@
-const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { chromium } = require('@playwright/test');
 const { FacebookPage } = require('../pages/FacebookPage');
 
-let browser;
-let context;
-let page;
+// Import common hooks
+require('../hooks/hooks');
+
 let facebookPage;
 
-Before(async function() {
-  browser = await chromium.launch();
-  context = await browser.createContext();
-  page = await context.newPage();
-  facebookPage = new FacebookPage(page);
-});
-
-After(async function() {
-  await context.close();
-  await browser.close();
-});
-
 Given('I navigate to Facebook', async function() {
+  facebookPage = new FacebookPage(this.page);
   await facebookPage.navigateToFacebook();
 });
 
@@ -34,7 +22,7 @@ When('I enter password {string}', async function(password) {
 
 When('I click the Facebook login button', async function() {
   await facebookPage.click(facebookPage.LOGIN_BUTTON);
-  await page.waitForTimeout(3000);
+  await this.page.waitForTimeout(3000);
 });
 
 Then('I should be logged in to Facebook', async function() {

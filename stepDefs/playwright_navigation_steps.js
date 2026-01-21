@@ -1,27 +1,15 @@
-const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { chromium } = require('@playwright/test');
 const { PlaywrightDocsPage } = require('../pages/PlaywrightDocsPage');
 const config = require('../config/config');
 
-let browser;
-let context;
-let page;
+// Import common hooks
+require('../hooks/hooks');
+
 let playwrightDocsPage;
 
-Before(async function() {
-  browser = await chromium.launch();
-  context = await browser.createContext();
-  page = await context.newPage();
-  playwrightDocsPage = new PlaywrightDocsPage(page);
-});
-
-After(async function() {
-  await context.close();
-  await browser.close();
-});
-
 Given('I navigate to Playwright home page', async function() {
+  playwrightDocsPage = new PlaywrightDocsPage(this.page);
   await playwrightDocsPage.navigateToPlaywrightHome();
 });
 
@@ -42,6 +30,6 @@ When('I reload the page', async function() {
 });
 
 Then('the page title should be {string}', async function(expectedTitle) {
-  const title = await page.title();
+  const title = await this.page.title();
   expect(title).toBe(expectedTitle);
 });

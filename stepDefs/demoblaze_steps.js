@@ -1,28 +1,16 @@
-const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('@playwright/test');
-const { chromium } = require('@playwright/test');
 const { DemoBlazePage } = require('../pages/DemoBlazePage');
 const config = require('../config/config');
 
-let browser;
-let context;
-let page;
+// Import common hooks
+require('../hooks/hooks');
+
 let demoBlazePage;
 
-Before(async function() {
-  browser = await chromium.launch();
-  context = await browser.createContext();
-  page = await context.newPage();
-  demoBlazePage = new DemoBlazePage(page);
-});
-
-After(async function() {
-  await context.close();
-  await browser.close();
-});
-
-// Background steps
+// Initialize page object in each scenario
 Given('I navigate to DemoBlazeStore website', async function() {
+  demoBlazePage = new DemoBlazePage(this.page);
   await demoBlazePage.navigateToDemoBlazeStore();
 });
 
@@ -40,14 +28,15 @@ When('I click the login button', async function() {
 });
 
 Then('I should see the welcome message {string}', async function(message) {
-  const welcomeElement = page.locator(`a:has-text("${message}")`);
+  const welcomeElement = this.page.locator(`a:has-text("${message}")`);
   await expect(welcomeElement).toBeVisible();
 });
 
 // Login with credentials (for background)
 Given('I am logged in to DemoBlazeStore with username {string} and password {string}', async function(username, password) {
+  demoBlazePage = new DemoBlazePage(this.page);
   await demoBlazePage.login(username, password);
-  await page.waitForTimeout(1000);
+  await this.page.waitForTimeout(1000);
 });
 
 // Logout steps
@@ -56,7 +45,7 @@ When('I click the logout button', async function() {
 });
 
 Then('I should see the login button', async function() {
-  const loginButton = page.locator('#login2');
+  const loginButton = this.page.locator('#login2');
   await expect(loginButton).toBeVisible();
 });
 
