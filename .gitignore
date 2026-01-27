@@ -1,8 +1,33 @@
 
-# Playwright
+# Dependencies
 node_modules/
+package-lock.json
+
+# Playwright reports and artifacts
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Test execution logs
+/logs/
+!logs/.gitkeep
+
+# Screenshots on failure
+/screenshots/
+!screenshots/.gitkeep
+
+# Cucumber reports
+cucumber-report.html
+cucumber-report.json
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

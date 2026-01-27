@@ -5,17 +5,15 @@ const isCI = !!process.env.CI;
 
 module.exports = {
   default: {
-    require: ['stepDefs/**/*.js'],
-    requireModule: ['@babel/register'],
+    require: [
+      'hooks/**/*.js',
+      'stepDefs/**/*.js'
+    ],
     format: [
       'progress-bar',
       'html:cucumber-report.html',
-      'json:cucumber-report.json',
-      '@cucumber/pretty'
+      'json:cucumber-report.json'
     ],
-    formatOptions: {
-      snippetInterface: 'async-await'
-    },
     strict: isCI,
     failFast: false,
     timeout: 60000,
